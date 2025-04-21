@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Plane</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <div id="plane"></div>
+    <div id="score">0</div>
+    <div id="high-score">High Score: 0</div> <!-- New high score element -->
+    
+    <div id="game-over">
+        <h1>Game Over!</h1>
+        <p>Your score: <span id="final-score">0</span></p>
+        <p>High Score: <span id="final-highscore">0</span></p>
+        <button id="restart-btn">Play Again</button>
+    </div>
+    
+    <div id="start-screen">
+        <h1>Flappy Plane</h1>
+        <p>Avoid the Skyscrapers!</p>
+        <p>High Score: <span id="start-highscore">0</span></p>
+        <button id="start-btn">Start Game</button>
+    </div>
+</div>
+
+    <script src="index.js"></script>
+</body>
+</html>
