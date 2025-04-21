@@ -1,4 +1,7 @@
-// Game elements
+        // Detect mobile device
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // Game elements
         const gameContainer = document.getElementById('game-container');
         const plane = document.getElementById('plane');
         const scoreElement = document.getElementById('score');
@@ -10,16 +13,16 @@
         const startScreen = document.getElementById('start-screen');
         const startHighscoreElement = document.getElementById('start-highscore');
         const startBtn = document.getElementById('start-btn');
+        const tapHint = document.getElementById('tap-hint');
         
         // Game settings
-        const gameWidth = gameContainer.offsetWidth;
-        const gameHeight = gameContainer.offsetHeight;
+        let gameWidth, gameHeight;
         const planeWidth = 40;
         const planeHeight = 30;
         
         // Game variables
         let planeX = 100;
-        let planeY = gameHeight / 2;
+        let planeY = 0;
         let planeVelocity = 0;
         let gravity = 0.4;
         let jumpForce = -8;
@@ -40,6 +43,10 @@
         
         // Initialize game elements
         function initGame() {
+            gameWidth = gameContainer.offsetWidth;
+            gameHeight = gameContainer.offsetHeight;
+            planeY = gameHeight / 2;
+            
             plane.style.width = planeWidth + 'px';
             plane.style.height = planeHeight + 'px';
             plane.style.left = planeX + 'px';
@@ -48,10 +55,15 @@
             highScoreElement.textContent = `High Score: ${highScore}`;
             finalHighscoreElement.textContent = highScore;
             startHighscoreElement.textContent = highScore;
+            
+            if (isMobile) {
+                tapHint.style.display = 'block';
+            }
         }
         
         // Event listeners
         function setupEventListeners() {
+            // Keyboard controls
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space') {
                     e.preventDefault();
@@ -59,14 +71,26 @@
                 }
             });
             
+            // Mouse/touch controls
             gameContainer.addEventListener('click', handleJump);
             gameContainer.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 handleJump();
             });
             
+            // Button controls
             restartBtn.addEventListener('click', resetGame);
             startBtn.addEventListener('click', startGame);
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (!gameRunning) {
+                    gameWidth = gameContainer.offsetWidth;
+                    gameHeight = gameContainer.offsetHeight;
+                    planeY = gameHeight / 2;
+                    plane.style.top = planeY + 'px';
+                }
+            });
         }
         
         // Jump mechanics
@@ -80,6 +104,11 @@
                 planeVelocity = jumpForce;
                 jumpCooldown = true;
                 setTimeout(() => jumpCooldown = false, 100);
+                
+                // Hide tap hint after first jump
+                if (isMobile && tapHint.style.display === 'block') {
+                    tapHint.style.display = 'none';
+                }
             }
         }
         
@@ -345,3 +374,10 @@
         initGame();
         setupEventListeners();
         createClouds();
+        
+        // Prevent touch scrolling
+        document.addEventListener('touchmove', function(e) {
+            if (gameRunning) {
+                e.preventDefault();
+            }
+        }, { passive: false });
