@@ -1,6 +1,11 @@
- body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -13,8 +18,10 @@
         
         #game-container {
             position: relative;
-            width: 400px;
-            height: 600px;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            max-height: 600px;
             background-color: #87CEEB;
             overflow: hidden;
             border: 3px solid #333;
@@ -29,9 +36,8 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 30"><path d="M4 15 L36 15 L28 8 L36 8 L20 0 L12 8 L4 8 Z" fill="%23FF5722"/><circle cx="8" cy="15" r="4" fill="%232196F3"/></svg>');
             background-size: contain;
             background-repeat: no-repeat;
-            z-index: 20; /* Higher than buildings */
+            z-index: 20;
             transform-origin: center center;
-            box-sizing: border-box;
             transition: transform 0.05s ease-out;
         }
         
@@ -42,7 +48,7 @@
             border-left: 3px solid #455A64;
             border-right: 3px solid #455A64;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            z-index: 15; /* Between plane and clouds */
+            z-index: 15;
         }
         
         .building::before {
@@ -79,7 +85,7 @@
             position: absolute;
             background-color: rgba(255, 255, 255, 0.7);
             border-radius: 50%;
-            z-index: 5; /* Behind buildings */
+            z-index: 5;
             filter: blur(2px);
         }
         
@@ -116,6 +122,8 @@
             align-items: center;
             color: white;
             z-index: 200;
+            text-align: center;
+            padding: 20px;
         }
         
         #game-over {
@@ -123,42 +131,43 @@
         }
         
         #game-over h1, #start-screen h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
         
         #game-over p, #start-screen p {
-            margin: 8px 0;
-            font-size: 20px;
+            margin: 10px 0;
+            font-size: 1.2rem;
         }
         
         button {
-            padding: 12px 24px;
-            font-size: 18px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 20px;
+            margin-top: 25px;
+            min-width: 160px;
         }
         
         #restart-btn {
             background-color: #4CAF50;
         }
         
-        #restart-btn:hover {
+        #restart-btn:active {
             background-color: #45a049;
-            transform: scale(1.05);
+            transform: scale(0.95);
         }
         
         #start-btn {
             background-color: #2196F3;
         }
         
-        #start-btn:hover {
+        #start-btn:active {
             background-color: #0b7dda;
-            transform: scale(1.05);
+            transform: scale(0.95);
         }
         
         .explosion {
@@ -176,4 +185,35 @@
         @keyframes explode {
             0% { transform: scale(0); opacity: 1; }
             100% { transform: scale(2); opacity: 0; }
+        }
+        
+        #tap-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            z-index: 50;
+            opacity: 0.8;
+            display: none;
+        }
+        
+        @media (max-height: 600px) {
+            #game-container {
+                max-height: 100vh;
+                border-radius: 0;
+                border: none;
+            }
+            
+            #game-over h1, #start-screen h1 {
+                font-size: 2rem;
+            }
+            
+            button {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
         }
